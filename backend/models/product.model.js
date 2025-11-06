@@ -12,6 +12,18 @@ const ProductSchema = new Schema({
   imageUrl: {
     type: String,
     default: 'https://via.placeholder.com/150'
+  },
+  rating:{
+    type:Number,
+    default:5.0
+  },
+  colors:{
+    type:[String],
+    default:['red','yellow','green','white','blue']
+  },
+  sizes:{
+    type:[String],
+    default:['S','M','L','XL']
   }
 });
 

@@ -60,6 +60,30 @@ router.delete('/cart/:id', async (req, res) => {
   }
 });
 
+// decrease quantity of a cart item by 1 (or remove if 0)
+router.patch('/cart/:id/decrease', async (req, res) => {
+  try {
+    const cartItem = await cartItemModel.findById(req.params.id);
+    if (!cartItem) {
+      return res.status(404).json({ message: 'Cart item not found' });
+    }
+
+    // decrease quantity
+    if (cartItem.quantity > 1) {
+      cartItem.quantity -= 1;
+      await cartItem.save();
+      const updatedItem = await cartItemModel.findById(cartItem._id).populate('product');
+      return res.json({ message: 'Quantity decreased', item: updatedItem });
+    }
+    //if qty is zero, remove it
+    await cartItemModel.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Item removed from cart' });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // get all cart items + total
 router.get('/cart', async (req, res) => {
   try {
@@ -89,7 +113,7 @@ router.post('/checkout', async (req, res) => {
     await cartItemModel.deleteMany({});
     
     const receipt = {
-      confirmationId: `MOCK-${Date.now()}`,
+      confirmationId: `RECEIPT-${Date.now()}`,
       timestamp: new Date().toISOString(),
       total: total,
       itemsPurchased: cartItems.map(item => ({

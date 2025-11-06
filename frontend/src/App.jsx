@@ -1,35 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import Header from './components/Header.jsx';
+import ProductList from './components/ProductList.jsx';
+import Cart from './components/Cart.jsx';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="font-sans text-gray-900 w-screen h-full">
+      <Header />
+      <main className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-8">
+          
+          {/* Product List */}
+          <div className="lg:col-span-2">
+            <ProductList />
+          </div>
+
+          {/* Cart (with sticky position on large screens) */}
+          <div className="lg:col-span-1 mt-8 lg:mt-0">
+            <div className="lg:sticky lg:top-6">
+              <Cart />
+            </div>
+          </div>
+          
+        </div>
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;
